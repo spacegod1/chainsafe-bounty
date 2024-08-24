@@ -44,7 +44,7 @@ function App() {
 
   function convertToEth(ethPrice) {
     if (dollarAmount && ethPrice) {
-      const convertedAmount = (dollarAmount / ethPrice).toFixed(6);
+      const convertedAmount = (dollarAmount / ethPrice).toFixed(4);
       setEthAmount(convertedAmount);
     }
   }
