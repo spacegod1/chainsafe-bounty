@@ -4,7 +4,7 @@
 
 ## 🚀 Features
 
-- **Real-Time Conversion**: Enter any dollar amount and instantly get the equivalent value in ETH.
+- **Real-Time Conversion**: Enter any dollar amount and instantly get the equivalent value in ETH annd other cryptocurrencies.
 - **Dynamic Price Fetching**: The app fetches the latest ETH/USD price using Chainlink's Mainnet Price Feeds.
 - **Responsive Design**: A beautifully designed, mobile-friendly interface with smooth animations and intuitive interactions.
 
