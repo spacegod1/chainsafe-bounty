@@ -13,6 +13,8 @@ function App() {
   const [dollarAmount, setDollarAmount] = useState("");
   const [ethAmount, setEthAmount] = useState("");
   const [loading, setLoading] = useState(false);
+  const [selectedCrypto, setSelectedCrypto] = useState("EthUsd");
+  // const [cryptoAmount, setCryptoAmount] = useState("");
 
   // Initialize rpc/provider
   const web3 = new Web3(window.ethereum);
@@ -27,12 +29,20 @@ function App() {
   //   console.log(resultPrice);
   // }
 
+  const cryptoOptions = {
+    EthUsd: MainnetPriceFeeds.EthUsd,
+    BtcUsd: MainnetPriceFeeds.BtcUsd,
+    LinkUsd: MainnetPriceFeeds.LinkUsd,
+    // Add other cryptocurrencies here if supported by Chainlink's price feeds
+  };
   // dollar amount
 
   async function getEthPrice() {
     setLoading(true);
     try {
-      const results = await web3.chainlink.getPrice(MainnetPriceFeeds.EthUsd);
+      const results = await web3.chainlink.getPrice(
+        cryptoOptions[selectedCrypto]
+      );
       const ethPrice = results.answer.toString().substring(0, 4); // Adjust for decimal places
       setPrice(ethPrice);
       convertToEth(ethPrice);
@@ -56,6 +66,12 @@ function App() {
     }
   };
 
+  const handleCryptoChange = (e) => {
+    setSelectedCrypto(e.target.value);
+    setPrice(0); // Reset the price when the crypto selection changes
+    // setCryptoAmount("");
+  };
+
   return (
     // <main className=" flex flex-col gap-6">
     //   <h4>{price}</h4>
@@ -68,6 +84,19 @@ function App() {
         <h1 className="text-4xl font-bold text-center">Crypto Converter</h1>
         <div className="flex flex-col space-y-4">
           <div className="flex flex-col space-y-2">
+            <label htmlFor="cryptoSelect" className="text-lg">
+              Select Cryptocurrency
+            </label>
+            <select
+              id="cryptoSelect"
+              value={selectedCrypto}
+              onChange={handleCryptoChange}
+              className="p-4 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="EthUsd">Ethereum (ETH)</option>
+              <option value="BtcUsd">Bitcoin (BTC)</option>
+              <option value="LinkUsd">Chainlink (LINK)</option>
+            </select>
             <label htmlFor="dollarAmount" className="text-lg">
               Enter Dollar Amount ($)
             </label>
@@ -88,13 +117,14 @@ function App() {
             {loading ? (
               <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white mx-auto"></div>
             ) : (
-              "Get ETH Equivalent"
+              "Get Crypto Equivalent"
             )}
           </button>
           {ethAmount && (
             <div className="text-center space-y-2">
-              <p className="text-2xl font-semibold">ETH Equivalent</p>
-              <p className="text-4xl font-bold">{ethAmount} ETH</p>
+              <p className="text-4xl font-bold">
+                {ethAmount} {selectedCrypto.replace("Usd", "").toUpperCase()}
+              </p>
             </div>
           )}
         </div>
