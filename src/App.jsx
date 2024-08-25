@@ -164,14 +164,14 @@ function App() {
       </div>
       <div className="mt-[6.5rem] text-[#8195a6]">
         <small className="tracking-wide">
-          Made with <img className="inline h-5 w-5" src={love} alt="love" /> by{" "}
+          Made with <img className="inline h-4 w-4" src={love} alt="love" /> by{" "}
           $pacegod
           <a
             className="text-[#E0BB20]"
             target="_blank"
             href="https://github.com/spacegod1/chainsafe-bounty"
           >
-            <FaGithub className="inline ml-4" size={20} />
+            <FaGithub className="inline ml-4 mb-1" size={20} />
           </a>
         </small>
       </div>
