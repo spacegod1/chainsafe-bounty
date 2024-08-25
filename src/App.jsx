@@ -33,6 +33,7 @@ function App() {
     EthUsd: MainnetPriceFeeds.EthUsd,
     BtcUsd: MainnetPriceFeeds.BtcUsd,
     LinkUsd: MainnetPriceFeeds.LinkUsd,
+    SolUsd: MainnetPriceFeeds.SolUsd,
     // Add other cryptocurrencies here if supported by Chainlink's price feeds
   };
   // dollar amount
@@ -53,6 +54,9 @@ function App() {
       } else if (selectedCrypto === "LinkUsd") {
         let actualLink = cryptoPrice / 1000;
         convertToLink(actualLink);
+      } else if (selectedCrypto === "SolUsd") {
+        let actualSol = cryptoPrice / 100;
+        convertToSol(actualSol);
       }
       // else if (selectedCrypto) {
 
@@ -82,6 +86,13 @@ function App() {
   function convertToLink(linkPrice) {
     if (dollarAmount && linkPrice && selectedCrypto === "LinkUsd") {
       const convertedAmount = (dollarAmount / linkPrice).toFixed(2);
+      setCryptoAmount(convertedAmount);
+    }
+  }
+
+  function convertToSol(solPrice) {
+    if (dollarAmount && solPrice && selectedCrypto === "SolUsd") {
+      const convertedAmount = (dollarAmount / solPrice).toFixed(2);
       setCryptoAmount(convertedAmount);
     }
   }
@@ -124,6 +135,7 @@ function App() {
               <option value="EthUsd">Ethereum (ETH)</option>
               <option value="BtcUsd">Bitcoin (BTC)</option>
               <option value="LinkUsd">Chainlink (LINK)</option>
+              <option value="SolUsd">Solana (SOL)</option>
             </select>
             <label htmlFor="dollarAmount" className="text-lg">
               Enter Dollar Amount ($)
