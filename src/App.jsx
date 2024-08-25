@@ -4,30 +4,20 @@ import {
   MainnetPriceFeeds,
 } from "@chainsafe/web3-plugin-chainlink";
 import { Web3 } from "web3";
+import loader from "./assets/spinner.svg";
 import "./App.css";
 
 function App() {
-  // const [price, setPrice] = useState(0);
-  // const [loading, setLoading] = useState(false);
-
   const [dollarAmount, setDollarAmount] = useState("");
   const [cryptoAmount, setCryptoAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [selectedCrypto, setSelectedCrypto] = useState("EthUsd");
-  // const [cryptoAmount, setCryptoAmount] = useState("");
 
   // Initialize rpc/provider
   const web3 = new Web3(window.ethereum);
 
   // register plugin
   web3.registerPlugin(new ChainlinkPlugin());
-
-  // async function getEthPrice() {
-  //   const results = await web3.chainlink.getPrice(MainnetPriceFeeds.EthUsd);
-  //   const resultPrice = results.answer.toString().substring(0, 4);
-  //   setPrice(resultPrice);
-  //   console.log(resultPrice);
-  // }
 
   const cryptoOptions = {
     EthUsd: MainnetPriceFeeds.EthUsd,
@@ -53,10 +43,10 @@ function App() {
         convertToBtc(cryptoPrice);
       } else if (selectedCrypto === "LinkUsd") {
         let actualLink = cryptoPrice / 1000;
-        convertToLink(actualLink);
+        convertToLinkandSol(actualLink);
       } else if (selectedCrypto === "SolUsd") {
         let actualSol = cryptoPrice / 100;
-        convertToSol(actualSol);
+        convertToLinkandSol(actualSol);
       }
       // else if (selectedCrypto) {
 
@@ -83,16 +73,13 @@ function App() {
     }
   }
 
-  function convertToLink(linkPrice) {
-    if (dollarAmount && linkPrice && selectedCrypto === "LinkUsd") {
-      const convertedAmount = (dollarAmount / linkPrice).toFixed(2);
-      setCryptoAmount(convertedAmount);
-    }
-  }
-
-  function convertToSol(solPrice) {
-    if (dollarAmount && solPrice && selectedCrypto === "SolUsd") {
-      const convertedAmount = (dollarAmount / solPrice).toFixed(2);
+  function convertToLinkandSol(price) {
+    if (
+      dollarAmount &&
+      price &&
+      (selectedCrypto === "LinkUsd" || selectedCrypto === "SolUsd")
+    ) {
+      const convertedAmount = (dollarAmount / price).toFixed(2);
       setCryptoAmount(convertedAmount);
     }
   }
@@ -112,18 +99,14 @@ function App() {
   };
 
   return (
-    // <main className=" flex flex-col gap-6">
-    //   <h4>{price}</h4>
-    //   <button className="cursor-pointer" onClick={getEthPrice}>
-    //     Get ETh Price
-    //   </button>
-    // </main>
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-gray-900 text-white flex items-center justify-center">
-      <div className="p-8 max-w-lg mx-auto bg-gray-800 rounded-lg shadow-lg space-y-8">
-        <h1 className="text-4xl font-bold text-center">Crypto Converter</h1>
-        <div className="flex flex-col space-y-4">
+    <div className="min-h-screen px-3 bg-gradient-to-br from-blue-900 to-gray-900 text-white flex items-center justify-center">
+      <div className="p-8 max-w-lg mx-auto bg-gray-800 rounded-lg shadow-lg space-y-10">
+        <h1 className="text-4xl font font-normal text-center">
+          Crypto Converter
+        </h1>
+        <div className="flex flex-col space-y-8">
           <div className="flex flex-col space-y-2">
-            <label htmlFor="cryptoSelect" className="text-lg">
+            <label htmlFor="cryptoSelect" className="text-sm titles">
               Select Cryptocurrency
             </label>
             <select
@@ -137,7 +120,7 @@ function App() {
               <option value="LinkUsd">Chainlink (LINK)</option>
               <option value="SolUsd">Solana (SOL)</option>
             </select>
-            <label htmlFor="dollarAmount" className="text-lg">
+            <label htmlFor="dollarAmount" className="text-sm titles">
               Enter Dollar Amount ($)
             </label>
             <input
@@ -155,7 +138,11 @@ function App() {
             disabled={loading}
           >
             {loading ? (
-              <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white mx-auto"></div>
+              <img
+                src={loader}
+                alt="loading gif"
+                className="h-[2.1rem] w-[2.1rem] inline"
+              />
             ) : (
               "Get Crypto Equivalent"
             )}
