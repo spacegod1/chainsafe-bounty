@@ -5,6 +5,7 @@ import {
 } from "@chainsafe/web3-plugin-chainlink";
 import { Web3 } from "web3";
 import loader from "./assets/spinner.svg";
+import logo from "./assets/swap-color.png";
 import "./App.css";
 
 function App() {
@@ -101,11 +102,14 @@ function App() {
   return (
     <div className="min-h-screen px-3 bg-gradient-to-br from-blue-900 to-gray-900 text-white flex items-center justify-center">
       <div className="p-8 max-w-lg mx-auto bg-gray-800 rounded-lg shadow-lg space-y-10">
-        <h1 className="text-4xl font font-normal text-center">
-          Crypto Converter
+        <h1 className="text-xl md:text-4xl font font-normal text-center">
+          Crypto C{/* <span> */}
+          <img src={logo} alt="logo" className="h-7 w-7 inline" />
+          {/* </span> */}
+          nverter
         </h1>
         <div className="flex flex-col space-y-8">
-          <div className="flex flex-col space-y-2">
+          <div className="flex flex-col gap-[0.6rem]">
             <label htmlFor="cryptoSelect" className="text-sm titles">
               Select Cryptocurrency
             </label>
@@ -133,7 +137,7 @@ function App() {
             />
           </div>
           <button
-            className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all"
+            className="w-full bg-blue-600 tracking-widest hover:bg-blue-500 text-white font text-sm md:text-[18px] font-normal py-2 px-4 rounded-full transition-all"
             onClick={getEthPrice}
             disabled={loading}
           >
@@ -144,7 +148,7 @@ function App() {
                 className="h-[2.1rem] w-[2.1rem] inline"
               />
             ) : (
-              "Get Crypto Equivalent"
+              "CONVERT"
             )}
           </button>
           {cryptoAmount && (
