@@ -7,6 +7,7 @@ import { Web3 } from "web3";
 import loader from "./assets/spinner.svg";
 import logo from "./assets/swap-color.png";
 import love from "./assets/love.png";
+import { FaGithub } from "react-icons/fa";
 import "./App.css";
 
 function App() {
@@ -101,8 +102,8 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen px-3 bg-gradient-to-br from-blue-900 to-gray-900 text-white flex flex-col items-center justify-center">
-      <div className="p-8 max-w-lg mx-auto bg-gray-800 rounded-lg shadow-lg space-y-10">
+    <div className="min-h-screen  bg-gradient-to-br from-blue-900 to-gray-900 text-white flex flex-col items-center justify-center">
+      <div className="p-6 mx-4 md:mx-auto bg-gray-800 rounded-lg shadow-lg space-y-10">
         <h1 className="text-xl md:text-4xl font font-normal text-center">
           Crypto C{/* <span> */}
           <img src={logo} alt="logo" className="h-7 w-7 inline" />
@@ -161,17 +162,18 @@ function App() {
           )}
         </div>
       </div>
-      <div className="mt-[6.5rem]">
-        <p>
+      <div className="mt-[6.5rem] text-[#8195a6]">
+        <small className="tracking-wide">
           Made with <img className="inline h-5 w-5" src={love} alt="love" /> by{" "}
+          $pacegod
           <a
             className="text-[#E0BB20]"
             target="_blank"
-            href="https://github.com/spacegod1"
+            href="https://github.com/spacegod1/chainsafe-bounty"
           >
-            $pacegod
+            <FaGithub className="inline ml-4" size={20} />
           </a>
-        </p>
+        </small>
       </div>
     </div>
   );
