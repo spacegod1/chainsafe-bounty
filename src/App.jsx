@@ -153,7 +153,7 @@ function App() {
           </button>
           {cryptoAmount && (
             <div className="text-center space-y-2">
-              <p className="text-4xl font-bold">
+              <p className="text-4xl">
                 {cryptoAmount} {selectedCrypto.replace("Usd", "").toUpperCase()}
               </p>
             </div>
