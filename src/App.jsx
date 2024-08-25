@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ChainlinkPlugin,
   MainnetPriceFeeds,
@@ -9,9 +9,9 @@ import "./App.css";
 function App() {
   // const [price, setPrice] = useState(0);
   // const [loading, setLoading] = useState(false);
-  const [price, setPrice] = useState(0);
+
   const [dollarAmount, setDollarAmount] = useState("");
-  const [ethAmount, setEthAmount] = useState("");
+  const [cryptoAmount, setCryptoAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [selectedCrypto, setSelectedCrypto] = useState("EthUsd");
   // const [cryptoAmount, setCryptoAmount] = useState("");
@@ -43,33 +43,61 @@ function App() {
       const results = await web3.chainlink.getPrice(
         cryptoOptions[selectedCrypto]
       );
-      const ethPrice = results.answer.toString().substring(0, 4); // Adjust for decimal places
-      setPrice(ethPrice);
-      convertToEth(ethPrice);
+
+      let cryptoPrice = results.answer.toString().substring(0, 5); // Adjust for decimal places
+      if (selectedCrypto === "EthUsd") {
+        let actualEth = cryptoPrice / 10;
+        convertToEth(actualEth);
+      } else if (selectedCrypto === "BtcUsd") {
+        convertToBtc(cryptoPrice);
+      } else if (selectedCrypto === "LinkUsd") {
+        let actualLink = cryptoPrice / 1000;
+        convertToLink(actualLink);
+      }
+      // else if (selectedCrypto) {
+
+      // }
     } catch (error) {
       console.error("Error fetching price:", error);
     }
     setLoading(false);
   }
 
+  // console.log(selectedCrypto);
+
   function convertToEth(ethPrice) {
-    if (dollarAmount && ethPrice) {
+    if (dollarAmount && ethPrice && selectedCrypto === "EthUsd") {
       const convertedAmount = (dollarAmount / ethPrice).toFixed(4);
-      setEthAmount(convertedAmount);
+      setCryptoAmount(convertedAmount);
     }
   }
 
+  function convertToBtc(btcPrice) {
+    if (dollarAmount && btcPrice && selectedCrypto === "BtcUsd") {
+      const convertedAmount = (dollarAmount / btcPrice).toFixed(7);
+      setCryptoAmount(convertedAmount);
+    }
+  }
+
+  function convertToLink(linkPrice) {
+    if (dollarAmount && linkPrice && selectedCrypto === "LinkUsd") {
+      const convertedAmount = (dollarAmount / linkPrice).toFixed(2);
+      setCryptoAmount(convertedAmount);
+    }
+  }
+
+  useEffect(() => {
+    setDollarAmount(""); //Listening for changes on selectedCrypto
+    setCryptoAmount("");
+  }, [selectedCrypto]);
+
   const handleDollarAmountChange = (e) => {
     setDollarAmount(e.target.value);
-    if (price) {
-      convertToEth(price);
-    }
   };
 
   const handleCryptoChange = (e) => {
     setSelectedCrypto(e.target.value);
-    setPrice(0); // Reset the price when the crypto selection changes
-    // setCryptoAmount("");
+    setDollarAmount("");
   };
 
   return (
@@ -120,10 +148,10 @@ function App() {
               "Get Crypto Equivalent"
             )}
           </button>
-          {ethAmount && (
+          {cryptoAmount && (
             <div className="text-center space-y-2">
               <p className="text-4xl font-bold">
-                {ethAmount} {selectedCrypto.replace("Usd", "").toUpperCase()}
+                {cryptoAmount} {selectedCrypto.replace("Usd", "").toUpperCase()}
               </p>
             </div>
           )}
